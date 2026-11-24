@@ -1,0 +1,393 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ivory: #f8f4ec;
+  --calendula: #e58a35;
+  --marigold: #f2b13b;
+  --botanical: #243d2d;
+  --champagne: #c8a56a;
+  --beige: #e9ddcb;
+  --charcoal: #191a17;
+  --silk: cubic-bezier(0.22, 1, 0.36, 1);
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  body {
+    @apply bg-ivory font-sans text-charcoal antialiased;
+    overflow-x: clip;
+    font-feature-settings: 'ss01', 'kern';
+  }
+  ::selection {
+    background: var(--calendula);
+    color: var(--ivory);
+  }
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  :focus-visible {
+    outline: 1.5px solid var(--calendula);
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  .gutter {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+  .eyebrow {
+    @apply font-sans text-[0.68rem] font-medium uppercase tracking-luxe;
+  }
+  .display {
+    @apply font-display font-normal uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.92;
+  }
+  .italic-accent {
+    @apply font-serif italic normal-case;
+    letter-spacing: 0;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-3 overflow-hidden whitespace-nowrap px-7 py-4 text-[0.7rem] font-medium uppercase tracking-wideish transition-colors duration-500;
+    border-radius: 999px;
+    isolation: isolate;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    transform: translateY(101%);
+    transition: transform 0.7s var(--silk);
+  }
+  .btn:hover::before {
+    transform: translateY(0);
+  }
+  .btn-solid {
+    @apply bg-botanical text-ivory;
+  }
+  .btn-solid::before {
+    background: var(--calendula);
+  }
+  .btn-ghost {
+    @apply border border-charcoal/25 text-charcoal hover:text-ivory;
+  }
+  .btn-ghost::before {
+    background: var(--botanical);
+  }
+  .btn-light {
+    @apply border border-ivory/40 text-ivory hover:text-charcoal;
+  }
+  .btn-light::before {
+    background: var(--ivory);
+  }
+
+  /* Underline link */
+  .ulink {
+    position: relative;
+  }
+  .ulink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s var(--silk);
+  }
+  .ulink:hover::after,
+  .ulink[aria-current='true']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Word reveal */
+  .split-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .split-word {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  /* Animated input borders */
+  .field {
+    position: relative;
+    display: block;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    @apply w-full bg-transparent pb-3 pt-6 font-sans text-[0.95rem] text-charcoal outline-none;
+    border-bottom: 1px solid rgba(25, 26, 23, 0.18);
+    border-radius: 0;
+  }
+  .field textarea {
+    resize: none;
+  }
+  .field label {
+    @apply pointer-events-none absolute left-0 top-6 text-[0.95rem] text-charcoal/55;
+    transform-origin: left top;
+    transition: transform 0.5s var(--silk), color 0.4s;
+  }
+  .field .bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--calendula), var(--champagne));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s var(--silk);
+  }
+  .field input:focus ~ .bar,
+  .field textarea:focus ~ .bar {
+    transform: scaleX(1);
+  }
+  .field input:focus ~ label,
+  .field input:not(:placeholder-shown) ~ label,
+  .field textarea:focus ~ label,
+  .field textarea:not(:placeholder-shown) ~ label {
+    transform: translateY(-1.35rem) scale(0.72);
+    @apply text-calendula;
+  }
+  .field[data-error='true'] input,
+  .field[data-error='true'] textarea {
+    border-bottom-color: #b5462a;
+  }
+
+  .glass-panel {
+    background: rgba(248, 244, 236, 0.94);
+  }
+}
+
+@layer utilities {
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Headline accents: italic calendula word, offset final line */
+.display .italic-accent {
+  color: var(--calendula);
+  font-size: 1.1em;
+  line-height: 0.85;
+}
+.hero-title .split-line:nth-child(3),
+.offset-last .split-line:last-child {
+  padding-left: clamp(2rem, 9vw, 9rem);
+}
+
+/* ---------------- Preloader (compositor-only animations) ---------------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--botanical);
+  color: var(--ivory);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1) 0.15s;
+}
+.preloader-inner {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1) 0.15s, opacity 0.5s ease;
+}
+.preloader-bloom {
+  height: 4rem;
+  width: 4rem;
+  margin-bottom: 2rem;
+  animation: pl-bloom 1.4s var(--silk) both;
+}
+.preloader-letter {
+  display: inline-block;
+  animation: pl-rise 1.1s var(--silk) both;
+  animation-delay: calc(var(--i) * 60ms + 100ms);
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.84, 0);
+  transition-delay: calc(var(--i) * 25ms);
+}
+.preloader-track {
+  position: relative;
+  margin-top: 1.5rem;
+  height: 1px;
+  width: 10rem;
+  overflow: hidden;
+  background: rgba(200, 165, 106, 0.25);
+}
+.preloader-bar {
+  position: absolute;
+  inset: 0;
+  background: var(--champagne);
+  transform-origin: left;
+  animation: pl-progress 2.6s cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+.preloader-note {
+  margin-top: 1.25rem;
+  animation: pl-fade 1s ease 0.6s both;
+}
+.preloader.is-leaving {
+  transform: translate3d(0, -100%, 0);
+}
+.preloader.is-leaving .preloader-inner {
+  transform: translate3d(0, 40%, 0);
+  opacity: 0;
+}
+.preloader.is-leaving .preloader-letter {
+  animation: none;
+  transform: translate3d(0, -110%, 0);
+}
+.preloader.is-leaving .preloader-bar {
+  animation: none;
+  transform: scaleX(1);
+  transition: transform 0.3s ease;
+}
+@keyframes pl-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes pl-bloom {
+  from {
+    transform: scale(0) rotate(-120deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+@keyframes pl-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.9);
+  }
+}
+@keyframes pl-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scroll indicator */
+@keyframes drip {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(220%);
+  }
+}
+.scroll-drip {
+  animation: drip 2.4s var(--silk) infinite;
+}
+
+@keyframes spot-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin-slow 60s linear infinite;
+  will-change: transform;
+}
+
+@keyframes bag-bump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.55);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.bag-bump {
+  animation: bag-bump 0.6s var(--silk);
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
